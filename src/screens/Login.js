@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { login } from "../store/actions/user";
 import {
   View,
   Text,
@@ -8,9 +10,10 @@ import {
 } from "react-native";
 
 class Login extends Component {
-  state = { email: "", password: "" };
+  state = { name: "nome teste", email: "", password: "" };
 
   login = () => {
+    this.props.onLogin({ ...this.state });
     this.props.navigation.navigate("Profile");
   };
 
@@ -73,4 +76,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return { onLogin: user => dispatch(login(user)) };
+};
+
+//export default Login;
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

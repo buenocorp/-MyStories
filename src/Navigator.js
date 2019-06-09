@@ -32,7 +32,7 @@ const loginOrProfileRouter = createAppContainer(
       Auth: authRouter
     },
     {
-      initialRouteName: "Profile"
+      initialRouteName: "Auth"
     }
   )
 );

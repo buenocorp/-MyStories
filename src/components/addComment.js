@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addComment } from "../store/actions/posts";
 import {
   View,
   Text,
@@ -16,7 +18,15 @@ class AddComment extends Component {
   };
 
   handleAddComment = () => {
-    Alert.alert("Adicionado!", this.state.comment);
+    this.props.onAddComment({
+      postId: this.props.postId,
+      comment: {
+        nickname: this.props.name || "Anonymous",
+        comment: this.state.comment
+      }
+    });
+
+    this.setState({ comment: "", editMode: false });
   };
 
   render() {
@@ -26,8 +36,6 @@ class AddComment extends Component {
         <View stye={styles.container}>
           <TextInput
             placeholder="Pode commentar..."
-            multiline = {true}
-            numberOfLines = {4}
             style={styles.input}
             autoFocus={true}
             value={this.state.comment}
@@ -63,17 +71,27 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "90%",
-    height: "60%", 
-    margin: 10,
-    borderWidth: 1,
-    borderColor: '#555',
-    borderRadius: 5,
+    marginLeft:10
   },
   caption: {
     marginLeft: 10,
     fontSize: 12,
-    color: "#CCC",
+    color: "#CCC"
   }
 });
 
-export default AddComment;
+const mapStateToProps = ({ user }) => {
+  return {
+    name: user.name
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddComment: payload => dispatch(addComment(payload))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddComment);
